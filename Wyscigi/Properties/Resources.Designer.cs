@@ -163,6 +163,16 @@ namespace Wyscigi.Properties {
         /// <summary>
         ///   Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap przegryw {
+            get {
+                object obj = ResourceManager.GetObject("przegryw", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap roadTrack {
             get {
                 object obj = ResourceManager.GetObject("roadTrack", resourceCulture);
@@ -196,6 +206,16 @@ namespace Wyscigi.Properties {
         internal static System.Drawing.Bitmap TruckWhite {
             get {
                 object obj = ResourceManager.GetObject("TruckWhite", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap win {
+            get {
+                object obj = ResourceManager.GetObject("win", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
