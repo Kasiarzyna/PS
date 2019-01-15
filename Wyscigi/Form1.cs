@@ -7,11 +7,209 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Sockets;
+using System.Net;
+using System.Threading;
+
+
+
+
 
 namespace Wyscigi
 {
     public partial class Form1 : Form
     {
+        //------------------------------------------
+
+
+        // State object for receiving data from remote device.  
+        public class StateObject
+        {
+            // Client socket.  
+            public Socket workSocket = null;
+            // Size of receive buffer.  
+            public const int BufferSize = 256;
+            // Receive buffer.  
+            public byte[] buffer = new byte[BufferSize];
+            // Received data string.  
+            public StringBuilder sb = new StringBuilder();
+        }
+
+        
+            // The port number for the remote device.  
+            private const int port = 11000;
+
+            // ManualResetEvent instances signal completion.  
+            private static ManualResetEvent connectDone =
+                new ManualResetEvent(false);
+            private static ManualResetEvent sendDone =
+                new ManualResetEvent(false);
+            private static ManualResetEvent receiveDone =
+                new ManualResetEvent(false);
+
+            // The response from the remote device.  
+            private static String response = String.Empty;
+
+            private static void StartClient()
+            {
+                // Connect to a remote device.  
+                try
+                {
+                    // Establish the remote endpoint for the socket.  
+                    // The name of the   
+                    // remote device is "host.contoso.com".  
+                    string Address = "127.0.0.1";
+                    IPAddress ipAddress = IPAddress.Parse(Address);
+                    IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
+
+                    // Create a TCP/IP socket.  
+                    Socket client = new Socket(ipAddress.AddressFamily,
+                        SocketType.Stream, ProtocolType.Tcp);
+
+                    // Connect to the remote endpoint.  
+                    client.BeginConnect(remoteEP,
+                        new AsyncCallback(ConnectCallback), client);
+                    connectDone.WaitOne();
+
+                    // Send test data to the remote device.  
+                    Send(client, "This is a test<EOF>");
+                    sendDone.WaitOne();
+
+                    // Receive the response from the remote device.  
+                    Receive(client);
+                    receiveDone.WaitOne();
+
+                    // Write the response to the console.  
+                    //Console.WriteLine("Response received : {0}", response);
+
+                    // Release the socket.  
+                    client.Shutdown(SocketShutdown.Both);
+                    client.Close();
+
+                }
+                catch (Exception e)
+                {
+                   // Console.WriteLine(e.ToString());
+                }
+            }
+
+            private static void ConnectCallback(IAsyncResult ar)
+            {
+                try
+                {
+                    // Retrieve the socket from the state object.  
+                    Socket client = (Socket)ar.AsyncState;
+
+                    // Complete the connection.  
+                    client.EndConnect(ar);
+
+                   // Console.WriteLine("Socket connected to {0}",
+                       // client.RemoteEndPoint.ToString());
+
+                    // Signal that the connection has been made.  
+                    connectDone.Set();
+                }
+                catch (Exception e)
+                {
+                   // Console.WriteLine(e.ToString());
+                }
+            }
+
+            private static void Receive(Socket client)
+            {
+                try
+                {
+                    // Create the state object.  
+                    StateObject state = new StateObject();
+                    state.workSocket = client;
+
+                    // Begin receiving the data from the remote device.  
+                    client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                        new AsyncCallback(ReceiveCallback), state);
+                }
+                catch (Exception e)
+                {
+                   // Console.WriteLine(e.ToString());
+                }
+            }
+
+            private static void ReceiveCallback(IAsyncResult ar)
+            {
+                try
+                {
+                    // Retrieve the state object and the client socket   
+                    // from the asynchronous state object.  
+                    StateObject state = (StateObject)ar.AsyncState;
+                    Socket client = state.workSocket;
+
+                    // Read data from the remote device.  
+                    int bytesRead = client.EndReceive(ar);
+
+                    if (bytesRead > 0)
+                    {
+                        // There might be more data, so store the data received so far.  
+                        state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
+
+                        // Get the rest of the data.  
+                        client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                            new AsyncCallback(ReceiveCallback), state);
+                    }
+                    else
+                    {
+                        // All the data has arrived; put it in response.  
+                        if (state.sb.Length > 1)
+                        {
+                            response = state.sb.ToString();
+                        }
+                        // Signal that all bytes have been received.  
+                        receiveDone.Set();
+                    }
+                }
+                catch (Exception e)
+                {
+                   // Console.WriteLine(e.ToString());
+                }
+            }
+
+            private static void Send(Socket client, String data)
+            {
+                // Convert the string data to byte data using ASCII encoding.  
+                byte[] byteData = Encoding.ASCII.GetBytes(data);
+
+                // Begin sending the data to the remote device.  
+                client.BeginSend(byteData, 0, byteData.Length, 0,
+                    new AsyncCallback(SendCallback), client);
+            }
+
+            private static void SendCallback(IAsyncResult ar)
+            {
+                try
+                {
+                    // Retrieve the socket from the state object.  
+                    Socket client = (Socket)ar.AsyncState;
+
+                    // Complete sending the data to the remote device.  
+                    int bytesSent = client.EndSend(ar);
+                  //  Console.WriteLine("Sent {0} bytes to server.", bytesSent);
+
+                    // Signal that all bytes have been sent.  
+                    sendDone.Set();
+                }
+                catch (Exception e)
+                {
+                  //  Console.WriteLine(e.ToString());
+                }
+            }
+
+          /* public static int Mmm(String[] args)
+            {
+                StartClient();
+                return 0;
+            }*/
+        
+
+        //------------------------------------------
+
         //zmienne globalne
         //predkosc samochodu
         int carSpeed = 5;
@@ -23,9 +221,7 @@ namespace Wyscigi
         bool carLeft;
         bool carRight;
 
-        //2nd car
-        bool carA;
-        bool carD;
+    
 
         bool end1;
         bool end2;
@@ -36,13 +232,17 @@ namespace Wyscigi
         int Score2 = 0;
         //klasa do generowania losowych liczb
         Random rnd = new Random();
+        bool op = true;
+     
+      
 
 
-
-        public Form1()
+      public Form1()
         {
-            InitializeComponent();
+           InitializeComponent();
+            StartClient();
             Reset();
+          
         }
         private void Reset()
         {
@@ -59,6 +259,7 @@ namespace Wyscigi
             player1.Top = 286;
             carLeft = false;
             carRight = false;
+            op = true;
 
             AI1.Left = 66;
             AI1.Top = -120;
@@ -72,20 +273,10 @@ namespace Wyscigi
             roadTrack1.Top = -870;
 
             //okno samochodu 2
-            end2 = false;
+           // end2 = false;
             trophy2.Visible = false;
             explosion2.Visible = false;
-            Score2 = 0;
-            player2.Left = 161;
-            player2.Top = 286;
-            carA = false;
-            carD = false;
-
-            AI3.Left = 80;
-            AI3.Top = 47;
-
-            AI4.Left = 273;
-            AI4.Top = 21;
+         
 
             roadTrack3.Left = -3;
             roadTrack3.Top = -222;
@@ -93,8 +284,11 @@ namespace Wyscigi
             roadTrack4.Top = -870;
             timer1.Start();
         }
+       
         private void timer1_Tick(object sender, EventArgs e)
         {
+            
+
             //tor1
             if (end1 == false)
             {
@@ -120,33 +314,11 @@ namespace Wyscigi
 
                 carLeft = false;
                 carRight = false;
+
+
+                
             }
 
-            //tor2
-            if (end2 == false)
-            {
-                Score2++;
-            }
-            if (end2 == true)
-            {
-                trophy2.Visible = true;
-                explosion2.Visible = true;
-                player2.Controls.Add(explosion2);
-                explosion2.Location = new Point(-8, 5);
-                explosion2.BackColor = Color.Transparent;
-                explosion2.BringToFront();
-
-                if (Score2 < Score1)
-                {
-                    trophy2.Image = Properties.Resources.przegryw;
-                }
-                if (Score2 > Score1)
-                {
-                    trophy2.Image = Properties.Resources.win;
-                }
-                carA = false;
-                carD = false;
-            }
 
             if (end1 == true && end2 == true)
             {
@@ -157,7 +329,7 @@ namespace Wyscigi
             roadTrack1.Top += roadSpeed;
             roadTrack2.Top += roadSpeed;
 
-            distance2.Text = "" + Score2;
+           // distance2.Text = "" + Score2;
             roadTrack3.Top += roadSpeed;
             roadTrack4.Top += roadSpeed;
 
@@ -188,15 +360,6 @@ namespace Wyscigi
                 player1.Left += carSpeed;
             }
 
-            //poruszanie w lewo i prawo
-            if (carA)
-            {
-                player2.Left -= carSpeed;
-            }
-            if (carD)
-            {
-                player2.Left += carSpeed;
-            }
 
             //warunek zabezpieczajacy, ze samochod nie wyjedzie z planszy
 
@@ -210,21 +373,11 @@ namespace Wyscigi
                 carLeft = false;
             }
 
-            //warunek zabezpieczajacy, ze samochod nie wyjedzie z planszy
-            if (player2.Left < 1)
-            {
-                carA = false;
-            }
-            else if (player2.Left + player2.Width >= panel2.Right)
-            {
-                carD = false;
-            }
+           
             //poruszanie samochodow-przeszkod w dol
             AI1.Top += trafficSpeed;
             AI2.Top += trafficSpeed;
 
-            AI3.Top += trafficSpeed;
-            AI4.Top += trafficSpeed;
 
             //respawn samochodow przeszkod
             if (AI1.Top > panel1.Height)
@@ -268,21 +421,10 @@ namespace Wyscigi
                 ChangeSpeed = ChangeSpeed + 500;
             }
 
-            //kolizja gracza-player2 z samochodem-przeszkoda
-            if (player2.Bounds.IntersectsWith(AI3.Bounds))
-            {
-                end2 = true;
-            }
-            if (player2.Bounds.IntersectsWith(AI4.Bounds))
-            {
-                end2 = true;
-            }
-            if (Score2 > ChangeSpeed)
-            {
-                trafficSpeed++;
-                roadSpeed++;
-                ChangeSpeed = ChangeSpeed + 500;
-            }
+        
+
+            
+
         }
 
         private void moveCar(object sender, KeyEventArgs e)
@@ -295,14 +437,7 @@ namespace Wyscigi
             {
                 carRight = true;
             }
-            if (e.KeyCode == Keys.A && player2.Left > 0)
-            {
-                carA = true;
-            }
-            if (e.KeyCode == Keys.D && player2.Left + player2.Width < panel2.Width)
-            {
-                carD = true;
-            }
+           
         }
 
         private void stopCar(object sender, KeyEventArgs e)
@@ -315,14 +450,7 @@ namespace Wyscigi
             {
                 carRight = false;
             }
-            if (e.KeyCode == Keys.A)
-            {
-                carA = false;
-            }
-            if (e.KeyCode == Keys.D)
-            {
-                carD = false;
-            }
+         
         }
 
         private void changeAI1()

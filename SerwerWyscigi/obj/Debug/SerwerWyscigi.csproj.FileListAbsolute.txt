@@ -1,0 +1,7 @@
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\bin\Debug\SerwerWyscigi.exe.config
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\bin\Debug\SerwerWyscigi.exe
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\bin\Debug\SerwerWyscigi.pdb
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\obj\Debug\SerwerWyscigi.csprojResolveAssemblyReference.cache
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\obj\Debug\SerwerWyscigi.csproj.CoreCompileInputs.cache
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\obj\Debug\SerwerWyscigi.exe
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\obj\Debug\SerwerWyscigi.pdb

@@ -18,3 +18,13 @@ C:\Users\Katarzyna\source\repos\PS\Wyscigi\obj\Debug\Wyscigi.csproj.GenerateReso
 C:\Users\Katarzyna\source\repos\PS\Wyscigi\obj\Debug\Wyscigi.csproj.CoreCompileInputs.cache
 C:\Users\Katarzyna\source\repos\PS\Wyscigi\obj\Debug\Wyscigi.exe
 C:\Users\Katarzyna\source\repos\PS\Wyscigi\obj\Debug\Wyscigi.pdb
+C:\Users\Katarzyna\source\repos\PS\Klient\Wyscigi\bin\Debug\Wyscigi.exe.config
+C:\Users\Katarzyna\source\repos\PS\Klient\Wyscigi\bin\Debug\Wyscigi.exe
+C:\Users\Katarzyna\source\repos\PS\Klient\Wyscigi\bin\Debug\Wyscigi.pdb
+C:\Users\Katarzyna\source\repos\PS\Klient\Wyscigi\obj\Debug\Wyscigi.csprojResolveAssemblyReference.cache
+C:\Users\Katarzyna\source\repos\PS\Klient\Wyscigi\obj\Debug\Wyscigi.Form1.resources
+C:\Users\Katarzyna\source\repos\PS\Klient\Wyscigi\obj\Debug\Wyscigi.Properties.Resources.resources
+C:\Users\Katarzyna\source\repos\PS\Klient\Wyscigi\obj\Debug\Wyscigi.csproj.GenerateResource.cache
+C:\Users\Katarzyna\source\repos\PS\Klient\Wyscigi\obj\Debug\Wyscigi.csproj.CoreCompileInputs.cache
+C:\Users\Katarzyna\source\repos\PS\Klient\Wyscigi\obj\Debug\Wyscigi.exe
+C:\Users\Katarzyna\source\repos\PS\Klient\Wyscigi\obj\Debug\Wyscigi.pdb
