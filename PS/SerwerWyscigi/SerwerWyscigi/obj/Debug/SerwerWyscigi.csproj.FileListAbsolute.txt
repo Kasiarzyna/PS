@@ -1,0 +1,14 @@
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\bin\Debug\SerwerWyscigi.exe.config
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\bin\Debug\SerwerWyscigi.exe
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\bin\Debug\SerwerWyscigi.pdb
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\obj\Debug\SerwerWyscigi.csprojResolveAssemblyReference.cache
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\obj\Debug\SerwerWyscigi.csproj.CoreCompileInputs.cache
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\obj\Debug\SerwerWyscigi.exe
+c:\users\katarzyna\source\repos\SerwerWyscigi\SerwerWyscigi\obj\Debug\SerwerWyscigi.pdb
+C:\Users\Katarzyna\source\repos\PS\SerwerWyscigi\SerwerWyscigi\bin\Debug\SerwerWyscigi.exe.config
+C:\Users\Katarzyna\source\repos\PS\SerwerWyscigi\SerwerWyscigi\bin\Debug\SerwerWyscigi.exe
+C:\Users\Katarzyna\source\repos\PS\SerwerWyscigi\SerwerWyscigi\bin\Debug\SerwerWyscigi.pdb
+C:\Users\Katarzyna\source\repos\PS\SerwerWyscigi\SerwerWyscigi\obj\Debug\SerwerWyscigi.csprojResolveAssemblyReference.cache
+C:\Users\Katarzyna\source\repos\PS\SerwerWyscigi\SerwerWyscigi\obj\Debug\SerwerWyscigi.csproj.CoreCompileInputs.cache
+C:\Users\Katarzyna\source\repos\PS\SerwerWyscigi\SerwerWyscigi\obj\Debug\SerwerWyscigi.exe
+C:\Users\Katarzyna\source\repos\PS\SerwerWyscigi\SerwerWyscigi\obj\Debug\SerwerWyscigi.pdb
